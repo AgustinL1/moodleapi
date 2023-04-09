@@ -15,6 +15,7 @@ services:
       - 'mariadb_data:/bitnami/mariadb'
     healthcheck:
      test: ["CMD", "mysqladmin", "ping", "--silent"]
+    restart: always
   moodle:
     image: bitnami/moodle:3.11.6
     ports:
@@ -40,6 +41,11 @@ services:
     build: ./api
     ports:
       - "5000:5000"
+    environment:
+      - DB_HOST=mariadb
+      - DB_NAME=bitnami_moodle
+      - DB_USER=bn_moodle
+      - ALLOW_EMPTY_PASSWORD=yes
     depends_on:
       mariadb:
         condition: service_healthy
