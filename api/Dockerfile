@@ -13,10 +13,12 @@ RUN apt install gcc
 
 RUN pip install flask
 
-RUN pip install mariadb
+RUN pip install pymysql==1.0.2
 
 RUN pip install bcrypt
 
 COPY . .
+
+EXPOSE 5000
 
 CMD ["python", "api.py"]

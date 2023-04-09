@@ -77,7 +77,7 @@ def obtenerQuizzes():
 
    return json.dumps(res)
    
-@app.route('/obtener-mensajes-discusion', methods = ['PUT'])
+@app.route('/obtener-mensajes-discusion', methods = ['GET'])
 def obtenerMensajesForos():
    print(request.json)
    try:
@@ -99,7 +99,7 @@ def obtenerMensajesForos():
    return json.dumps(res)
 
 
-@app.route('/obtener-datos-foro', methods = ['PUT'])
+@app.route('/obtener-datos-foro', methods = ['GET'])
 def obtenerDatosForo():
 
    try:
@@ -148,7 +148,7 @@ def userLogin():
       return json.dumps([])
 
 
-@app.route('/obtener-nombre-discusion', methods = ['PUT'])
+@app.route('/obtener-nombre-discusion', methods = ['GET'])
 def obtenerNombreDiscusion():
 
    try:
@@ -170,7 +170,7 @@ def obtenerNombreDiscusion():
    return json.dumps(res)
 
    
-@app.route('/obtener-participantes-curso', methods = ['PUT'])
+@app.route('/obtener-participantes-curso', methods = ['GET'])
 def obtenerParticipantesCurso():
 
    try:
@@ -194,7 +194,7 @@ def obtenerParticipantesCurso():
 
 
 
-@app.route('/obtener-preguntas-examen', methods = ['PUT'])
+@app.route('/obtener-preguntas-examen', methods = ['GET'])
 def obtenerPreguntasExamen():
 
    try:
@@ -253,7 +253,7 @@ def insertarIntentoQuiz():
    return "", 200
 
 
-@app.route('/obtener-leccion', methods = ['PUT'])
+@app.route('/obtener-leccion', methods = ['GET'])
 def obtenerRespuestasLesson():
 
    try:

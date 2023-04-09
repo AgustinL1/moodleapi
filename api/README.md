@@ -1,5 +1,3 @@
-# instalar
-- pip3 install flask
-- sudo dnf install mariadb-connector-c-devel gcc python3-devel
-- pip3 install mariadb
-- pip install bcrypt
+# API Moodle
+
+En la siguiente API se pueden realizar tanto consultas como guardar datos en una bdd, que luego se podran recuperar como sesion.

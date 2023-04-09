@@ -1,6 +1,6 @@
 # Module Imports
-import mariadb
 import sys
+import mariadb
 
 class DBManager:
 
@@ -18,12 +18,11 @@ class DBManager:
     def __init__(self):
         try:
             self._conn = mariadb.connect(
-                user="moodle",
-                password="raffles",
-                host="localhost",
+                user="bn_moodle",
+                password="",
+                host="mariadb",
                 port=3306,
-                database="moodle"
-
+                database="bitnami_moodle"
             )
             print("Connected to DB")
 
