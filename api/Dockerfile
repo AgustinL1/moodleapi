@@ -15,6 +15,8 @@ RUN pip install flask
 
 RUN pip install pymysql==1.0.2
 
+RUN pip3 install mariadb
+
 RUN pip install bcrypt
 
 COPY . .

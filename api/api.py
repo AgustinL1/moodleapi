@@ -300,4 +300,4 @@ def insertarIntentoLesson():
 
 if __name__ == '__main__':
    DBManager.get_instance()
-   app.run()
+   app.run(host="0.0.0.0")

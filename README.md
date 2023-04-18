@@ -5,10 +5,6 @@
 ````
 docker-compose up -d
 ````
-* Si ya ejecutaste el anterior comando, la proxima vez que quieras correr el docker solamente ejecuta el siguiente comando:
-````
-docker-compose up
-````
 * Para dejar de correr el docker:
 ````
 docker-compose down
