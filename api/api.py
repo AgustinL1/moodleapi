@@ -1,10 +1,12 @@
 from flask import Flask, request
+from flask_lt import run_with_lt
 from db_manager import DBManager
 import json
 import time
 import bcrypt
 
 app = Flask(__name__)
+run_with_lt(app, subdomain="tnmapi")
 
 @app.route('/insertar-mensaje', methods = ['PUT'])
 def insertar():

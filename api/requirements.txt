@@ -1,0 +1,4 @@
+bcrypt
+Flask
+flask-localtunnel
+mariadb
