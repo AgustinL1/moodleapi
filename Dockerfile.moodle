@@ -17,4 +17,4 @@ RUN npm fund
 RUN node --version
 RUN npm --version
 
-# Falta poner que se ejecute lt -p 8080 -s subdominio
+RUN echo "* * * * * root /bin/bash -c 'lt -p 8080 -s tnmmoodle'" >> /etc/crontab
