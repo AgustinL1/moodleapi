@@ -17,4 +17,5 @@ RUN npm fund
 RUN node --version
 RUN npm --version
 
+# Redireccionar del puerto 8080 a tnmmoodle.loca.lt en la web
 RUN echo "* * * * * root /bin/bash -c 'lt -p 8080 -s tnmmoodle'" >> /etc/crontab

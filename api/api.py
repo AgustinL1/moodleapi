@@ -8,6 +8,11 @@ import bcrypt
 app = Flask(__name__)
 run_with_lt(app, subdomain="tnmapi")
 
+@app.route('/', methods = ['GET'])
+def index():
+   return "MOODLE API", 200
+
+
 @app.route('/insertar-mensaje', methods = ['PUT'])
 def insertar():
    print("hola")
