@@ -6,7 +6,7 @@ Se utiliza Localtunnel para redireccionar nuestro host local a internet y que se
 Para especificar un subdominio para la url crear un archivo .env replicando el archivo .env.example.
 El archivo debe quedar de la siguiente forma:
 ```
-MOODLE.SUBDOMAIN = example
+API.SUBDOMAIN = example
 ```
 Al determinar el subdominio, la url sera la siguiente: 
 ```
