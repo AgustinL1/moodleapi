@@ -2,3 +2,4 @@ bcrypt
 Flask
 flask-localtunnel
 mariadb
+python-dotenv

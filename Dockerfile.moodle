@@ -7,7 +7,7 @@ RUN apt-get -y install curl
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
    apt-get install -y nodejs
 
-RUN npm install -g npm@9.6.5
+RUN npm install -g npm@9.6.6
 
 RUN npm install -g localtunnel
 
@@ -17,5 +17,8 @@ RUN npm fund
 RUN node --version
 RUN npm --version
 
-# Redireccionar del puerto 8080 a tnmmoodle.loca.lt en la web
-RUN echo "* * * * * root /bin/bash -c 'lt -p 8080 -s tnmmoodle'" >> /etc/crontab
+ARG SUBDOMAIN
+ENV env_subdomain $SUBDOMAIN
+
+# Redireccionar del puerto 8080 a ${SUBDOMAIN}.loca.lt en la web
+RUN echo "* * * * * root /bin/bash -c 'lt -p 8080 -s $env_subdomain'" >> /etc/crontab

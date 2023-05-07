@@ -4,9 +4,11 @@ from db_manager import DBManager
 import json
 import time
 import bcrypt
+import os
 
+api_subdomain = os.getenv("API.SUBDOMAIN")
 app = Flask(__name__)
-run_with_lt(app, subdomain="tnmapi")
+run_with_lt(app, subdomain=api_subdomain)
 
 @app.route('/', methods = ['GET'])
 def index():

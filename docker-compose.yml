@@ -18,7 +18,11 @@ services:
     restart: always
   moodle:
     build:
+      args:
+        SUBDOMAIN: $MOODLE_SUBDOMAIN
       dockerfile: Dockerfile.moodle
+    env_file:
+      - .env
     ports:
       - '80:8080'
       - '443:8443'
@@ -32,7 +36,6 @@ services:
       - PHP_POST_MAX_SIZE=3G
       - PHP_UPLOAD_MAX_FILESIZE=3G 
       - PHP_MEMORY_LIMIT=3G
-
     volumes:
       - 'moodle_data:/bitnami/moodle'
       - 'moodledata_data:/bitnami/moodledata'
