@@ -3,16 +3,12 @@
 La siguiente API creada con Flask se utiliza como intermediario entre contenedores Docker de MariaDB y Moodle.
 Se utiliza Localtunnel para redireccionar nuestro host local a internet y que se pueda acceder desde cualquier computadora.
 
-Para realizar peticiones la url por defecto es:
+Para especificar un subdominio para la url crear un archivo .env replicando el archivo .env.example.
+El archivo debe quedar de la siguiente forma:
 ```
-https://tnmapi.loca.lt
+MOODLE.SUBDOMAIN = example
 ```
-Si quisiera cambiarse la misma, modificar el archivo api.py en la linea 9:
-```
-run_with_lt(app, subdomain="tnmapi")
-```
-Donde se deberia el subdominio "tnmapi" por lo que quisieramos.
-Con este cambio, las peticiones las realizaremos a la url:
+Al determinar el subdominio, la url sera la siguiente: 
 ```
 https://example.loca.lt
 ```

@@ -10,23 +10,24 @@ docker compose up -d
 docker compose down
 ```
 
+## Especificar url de Moodle
+
+Para especificar el subdominio de la url de Moodle se debe crear un archivo .env replicando el archivo .env.example.
+El archivo debe quedar de la siguiente forma:
+```
+API.SUBDOMAIN = example
+```
+Al determinar el subdominio, la url sera la siguiente: 
+```
+https://example.loca.lt
+```
+Siendo "example" el subdominio que elegimos. En caso de que este en uso nos dara un subdominio aleatorio, por lo tanto, deberia cambiarse por uno que sepamos que no se utilizara.
+
 ## Comprobacion
 
 * Para comprobar que funciona debes ingresar a la siguiente direccion:
 ```
-https://tnmmoodle.loca.lt
+https://example.loca.lt
 ```
 * Si aparece un login de Moodle es porque ya esta en funcionamiento
 * Las consultas se devuelven en formato JSON
-
-## Cambiar url de Moodle
-
-Para cambiar la url de Moodle se debe cambiar la linea 20 del Dockerfile.moodle:
-```
-RUN echo "* * * * * root /bin/bash -c 'lt -p 8080 -s tnmmoodle'" >> /etc/crontab
-```
-En este caso modificar "tnmmoodle" por el subdominio que quieras. La url de Moodle quedaria:
-```
-https://example.loca.lt
-```
-Donde "example" es el subdominio elegido. En caso de que este en uso nos dara un subdominio aleatorio, por lo tanto, deberia cambiarse por uno que sepamos que no se utilizara.
