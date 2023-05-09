@@ -6,7 +6,7 @@ import time
 import bcrypt
 import os
 
-api_subdomain = os.getenv("API.SUBDOMAIN")
+api_subdomain = os.getenv("API_SUBDOMAIN")
 app = Flask(__name__)
 run_with_lt(app, subdomain=api_subdomain)
 

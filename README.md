@@ -15,7 +15,7 @@ docker compose down
 Para especificar el subdominio de la url de Moodle se debe crear un archivo .env replicando el archivo .env.example.
 El archivo debe quedar de la siguiente forma:
 ```
-MOODLE.SUBDOMAIN = example
+MOODLE_SUBDOMAIN = example
 ```
 Al determinar el subdominio, la url sera la siguiente: 
 ```

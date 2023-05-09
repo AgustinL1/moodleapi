@@ -3,3 +3,5 @@ Flask
 flask-localtunnel
 mariadb
 python-dotenv
+py-localtunnel
+requests
