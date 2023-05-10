@@ -216,7 +216,7 @@ def obtenerPreguntasExamen():
       """
          SELECT q.id,q.course,q.name,q.timelimit,q.intro
                ,sumgrades,grade,quizid,questionid,qe.name,questiontext
-               ,defaultmark,qa.id,answer,fraction,c.fullname, c.shortname, c.summary, qa.feedback
+               ,defaultmark,qa.id,answer,fraction,c.fullname, c.shortname, c.summary, qa.feedback, qe.generalfeedback
          FROM mdl_quiz q
          join mdl_quiz_slots qs on q.id = qs.quizid
          join mdl_question qe on qe.id = qs.questionid
@@ -229,7 +229,11 @@ def obtenerPreguntasExamen():
    res = []
 
    for i in cur:
-      res.append({"id":i[0],"course":i[1], "name":i[2],"timelimit":i[3], "intro":i[4], "sumgrades":float(i[5]),"grade":float(i[6]),"quizid":i[7],"questionid":i[8],"question_name":i[9],"question_text":i[10],"defaultmark":float(i[11]),"question_answer_id":i[12],"question_answer":i[13],"fraction":float(i[14]), "fullName":i[15], "shortName":i[16], "summary":i[17], "feedback":i[18]})
+      res.append({"id":i[0],"course":i[1], "name":i[2],"timelimit":i[3], "intro":i[4],
+                  "sumgrades":float(i[5]),"grade":float(i[6]),"quizid":i[7],"questionid":i[8],
+                  "question_name":i[9],"question_text":i[10],"defaultmark":float(i[11]),"question_answer_id":i[12],
+                  "question_answer":i[13],"fraction":float(i[14]), "fullName":i[15], "shortName":i[16], 
+                  "summary":i[17], "feedback":i[18], "generalfeedback":i[19]})
 
    return json.dumps(res)
 
