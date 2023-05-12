@@ -55,6 +55,7 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+    restart: always
     volumes:
       - ./api:/app
 

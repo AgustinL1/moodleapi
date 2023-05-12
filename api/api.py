@@ -311,26 +311,27 @@ def insertarIntentoLesson():
 
    return "", 200
 
-@app.route('/obtener-videos', methods = ['GET'])
+@app.route('/obtener-videos', methods=['GET'])
 def obtenerVideo():
-   print(request.json)
-   try:
-      course = request.json.get("course")
-   except:
-      return "", 400
-   
-   cur = DBManager.get_instance().get_cur()
-   cur.execute("select distinct u.name, u.externalurl \
+    print(request.json)
+    try:
+        course = request.json.get("course")
+    except:
+        return "", 400
+
+    cur = DBManager.get_instance().get_cur()
+    cur.execute("select distinct u.name, u.externalurl \
                from mdl_url u \
                join mdl_course_modules cm on u.id=cm.instance \
                join mdl_course_sections cs on cm.section=cs.id \
-               where(u.course=?)", 
-      (course,))
-   res = []
-   for i in cur:
-      res.append({"name":i[0],"externalurl":i[1]})
-
-   return json.dumps(res)
+               where(u.course=?)",
+                (course,))
+    res = []
+    for i in cur:
+        res.append({"name": i[0], "externalurl": i[1]})
+   
+    # Convertir el objeto JSON en una cadena
+    return json.dumps(res)
 
 if __name__ == '__main__':
    DBManager.get_instance()
