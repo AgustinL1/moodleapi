@@ -333,6 +333,22 @@ def obtenerVideo():
     # Convertir el objeto JSON en una cadena
     return json.dumps(res)
 
+@app.route('/obtener-cursos', methods=['GET'])
+def obtenerCursos():
+   
+   cur = DBManager.get_instance().get_cur()
+   cur.execute("select c.id, c.fullname \
+               from mdl_course c")
+   
+   res = []
+   for i in cur:
+      res.append({
+         "id": i[0],
+         "fullname": i[1]
+      })
+   
+   return json.dumps(res)
+
 if __name__ == '__main__':
    DBManager.get_instance()
    app.run(debug=True, host="0.0.0.0")
