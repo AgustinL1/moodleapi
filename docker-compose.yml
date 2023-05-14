@@ -58,6 +58,15 @@ services:
     restart: always
     volumes:
       - ./api:/app
+  lt:
+    build:
+      context: lt
+      dockerfile: Dockerfile.lt
+    env_file:
+      - .env
+    command: "usr/local/bin/lt -p 5000 --local-host apimoodle -s $API_SUBDOMAIN"
+    depends_on:
+     - apimoodle
 
 volumes:
   mariadb_data:
