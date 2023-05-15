@@ -1,15 +1,19 @@
 from flask import Flask, request
+from flask_lt import run_with_lt
 from db_manager import DBManager
 import json
 import time
 import bcrypt
 import os
 
+api_subdomain = os.getenv("API_SUBDOMAIN")
 app = Flask(__name__)
+run_with_lt(app, subdomain=api_subdomain)
 
 @app.route('/', methods = ['GET'])
 def index():
    return "MOODLE API", 200
+
 
 @app.route('/insertar-mensaje', methods = ['PUT'])
 def insertar():
@@ -69,11 +73,16 @@ def obtenerDisuciones():
 
 @app.route('/obtener-quizzes', methods = ['GET'])
 def obtenerQuizzes():
+   try:
+        course = request.json.get("course")
+   except:
+        return "", 400
    cur = DBManager.get_instance().get_cur()
    cur.execute(
-      "SELECT mdq.id, mdq.course, mdq.name, mdq.intro FROM mdl_quiz mdq",
-      ()
-   )
+      "SELECT mdq.id, mdq.course, mdq.name, mdq.intro \
+      FROM mdl_quiz mdq \
+      where(mdq.course=?)",
+      (course,))
 
    res = []
 
@@ -334,8 +343,8 @@ def obtenerCursos():
    
    cur = DBManager.get_instance().get_cur()
    cur.execute("select c.id, c.fullname \
-               from mdl_course c")
-   
+               from mdl_course c \
+               where c.id <> 1")   
    res = []
    for i in cur:
       res.append({
