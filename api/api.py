@@ -1,14 +1,11 @@
 from flask import Flask, request
-from flask_lt import run_with_lt
 from db_manager import DBManager
 import json
 import time
 import bcrypt
 import os
 
-api_subdomain = os.getenv("API_SUBDOMAIN")
 app = Flask(__name__)
-run_with_lt(app, subdomain=api_subdomain)
 
 @app.route('/', methods = ['GET'])
 def index():
