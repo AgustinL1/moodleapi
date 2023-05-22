@@ -16,6 +16,7 @@ services:
     healthcheck:
      test: ["CMD", "mysqladmin", "ping", "--silent"]
     restart: always
+
   moodle:
     build:
       args:
@@ -27,6 +28,7 @@ services:
       - '80:8080'
       - '443:8443'
     environment:
+      - BITNAMI_DEBUG=true
       - MOODLE_DATABASE_HOST=mariadb
       - MOODLE_DATABASE_PORT_NUMBER=3306
       - MOODLE_DATABASE_USER=bn_moodle
@@ -38,26 +40,22 @@ services:
       - PHP_MEMORY_LIMIT=3G
     volumes:
       - 'moodle_data:/bitnami/moodle'
-      - 'moodledata_data:/bitnami/moodledata'
     depends_on:
       - mariadb
+
   apimoodle:
     build:
       context: ./api
       dockerfile: Dockerfile.dev
     ports:
       - "5000:5000"
-    environment:
-      - DB_HOST=mariadb
-      - DB_NAME=bitnami_moodle
-      - DB_USER=bn_moodle
-      - ALLOW_EMPTY_PASSWORD=yes
     depends_on:
       mariadb:
         condition: service_healthy
     restart: always
     volumes:
       - ./api:/app
+
   lt:
     build:
       context: lt
@@ -72,6 +70,4 @@ volumes:
   mariadb_data:
     driver: local
   moodle_data:
-    driver: local
-  moodledata_data:
     driver: local
