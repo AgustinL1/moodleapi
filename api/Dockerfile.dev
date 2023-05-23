@@ -1,30 +1,23 @@
-FROM python:3.6-buster
+FROM python:3.10-slim
 
 WORKDIR /app
 
-RUN apt-get update
-RUN apt-get install xz-utils
-RUN apt-get -y install curl
-
-RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
-   apt-get install -y nodejs
-
-RUN npm install -g npm@9.6.6
-
-RUN npm fund
-
-RUN apt install wget
-
 RUN apt-get update \
-    && apt-get -yy install libmariadb-dev
+    && apt-get install -y xz-utils wget build-essential libmariadb-dev
 
-RUN apt install libmariadb3 libmariadb-dev
+RUN wget https://downloads.mariadb.com/Connectors/c/connector-c-3.3.2/mariadb-connector-c-3.3.2-debian-bullseye-amd64.tar.gz \
+    && tar xvf mariadb-connector-c-3.3.2-debian-bullseye-amd64.tar.gz \
+    && cd mariadb-connector-c-3.3.2-debian-bullseye-amd64 \
+    && cp -R bin/ /usr/local/ \
+    && cp -R lib/ /usr/local/ \
+    && cp -R include/ /usr/local/ \
+    && ldconfig
 
-RUN apt install gcc
+RUN pip install --upgrade pip
 
 COPY requirements.txt requirements.txt
 
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . .
 
