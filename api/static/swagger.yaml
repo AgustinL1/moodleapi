@@ -2,18 +2,14 @@ openapi: 3.0.0
 info:
   title: MOODLE API
   version: 1.0.0
+tags:
+  - name: API
+    description: Documentacion de la API de Moodle
 paths:
-  /:
-    get:
-      summary: Obtener la página de inicio
-      responses:
-        "200":
-          description: Página de inicio de la API de Moodle
-          content:
-            text/plain:
-              example: "MOODLE API"
   /insertar-mensaje:
     put:
+      tags:
+        - API
       summary: Insertar un mensaje en el foro
       requestBody:
         required: true
@@ -46,6 +42,8 @@ paths:
           description: Error al procesar la solicitud
   /obtener-foros:
     get:
+      tags:
+        - API
       summary: Obtener la lista de foros
       responses:
         "200":
@@ -65,3 +63,494 @@ paths:
                     "name": "Foro 2"
                   }
                 ]
+  /obtener-discusiones:
+    get:
+      tags:
+        - API
+      summary: Obtener discusiones
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ID de la discusión
+                    course:
+                      type: string
+                      description: Curso de la discusión
+                    forum:
+                      type: string
+                      description: Foro de la discusión
+                    name:
+                      type: string
+                      description: Nombre de la discusión
+    parameters: []
+  /obtener-quizzes:
+    get:
+      tags:
+        - API
+      summary: Obtener quizzes
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ID del quiz
+                    course:
+                      type: string
+                      description: Curso del quiz
+                    name:
+                      type: string
+                      description: Nombre del quiz
+                    intro:
+                      type: string
+                      description: Introducción del quiz
+    parameters:
+      - in: query
+        name: course
+        required: true
+        schema:
+          type: string
+        description: Curso asociado al quiz
+  /obtener-mensajes-discusion:
+    get:
+      tags:
+        - API
+      summary: Obtener mensajes de discusión
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ID del mensaje
+                    discussion:
+                      type: integer
+                      description: ID de la discusión asociada al mensaje
+                    parent:
+                      type: integer
+                      description: ID del mensaje padre
+                    userId:
+                      type: integer
+                      description: ID del usuario que envió el mensaje
+                    created:
+                      type: string
+                      format: date-time
+                      description: Fecha y hora de creación del mensaje
+                    subject:
+                      type: string
+                      description: Asunto del mensaje
+                    message:
+                      type: string
+                      description: Contenido del mensaje
+    parameters:
+      - in: query
+        name: discussion
+        required: true
+        schema:
+          type: integer
+        description: ID de la discusión de la cual obtener los mensajes
+  /obtener-datos-foro:
+    get:
+      tags:
+        - API
+      summary: Obtener datos del foro
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ID del foro
+                    course:
+                      type: string
+                      description: Curso del foro
+                    intro:
+                      type: string
+                      description: Introducción del foro
+    parameters:
+      - in: query
+        name: name
+        required: true
+        schema:
+          type: string
+        description: Nombre del foro
+
+  /user-login:
+    put:
+      tags:
+        - API
+      summary: Iniciar sesión de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Nombre de usuario
+                password:
+                  type: string
+                  description: Contraseña
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ID del usuario
+                    username:
+                      type: string
+                      description: Nombre de usuario
+                    firstname:
+                      type: string
+                      description: Nombre del usuario
+                    lastname:
+                      type: string
+                      description: Apellido del usuario
+                    email:
+                      type: string
+                      description: Correo electrónico del usuario
+        "400":
+          description: Bad Request
+
+  /obtener-nombre-discusion:
+    get:
+      tags:
+        - API
+      summary: Obtener nombre de la discusión
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Nombre de la discusión
+    parameters:
+      - in: query
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: ID de la discusión
+
+  /obtener-participantes-curso:
+    get:
+      tags:
+        - API
+      summary: Obtener participantes del curso
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: integer
+                      description: ID del participante
+    parameters:
+      - in: query
+        name: courseId
+        required: true
+        schema:
+          type: integer
+        description: ID del curso
+  /obtener-preguntas-examen:
+    get:
+      tags:
+        - API
+      summary: Obtener preguntas del examen
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ID de la pregunta
+                    course:
+                      type: string
+                      description: Curso de la pregunta
+                    name:
+                      type: string
+                      description: Nombre del examen
+                    timelimit:
+                      type: string
+                      description: Límite de tiempo del examen
+                    intro:
+                      type: string
+                      description: Introducción del examen
+                    sumgrades:
+                      type: number
+                      description: Suma de las calificaciones
+                    grade:
+                      type: number
+                      description: Calificación
+                    quizid:
+                      type: string
+                      description: ID del examen
+                    questionid:
+                      type: string
+                      description: ID de la pregunta
+                    question_name:
+                      type: string
+                      description: Nombre de la pregunta
+                    question_text:
+                      type: string
+                      description: Texto de la pregunta
+                    defaultmark:
+                      type: number
+                      description: Marca predeterminada
+                    question_answer_id:
+                      type: string
+                      description: ID de la respuesta de la pregunta
+                    question_answer:
+                      type: string
+                      description: Respuesta de la pregunta
+                    fraction:
+                      type: number
+                      description: Fracción
+                    fullName:
+                      type: string
+                      description: Nombre completo del curso
+                    shortName:
+                      type: string
+                      description: Nombre corto del curso
+                    summary:
+                      type: string
+                      description: Resumen del curso
+                    feedback:
+                      type: string
+                      description: Comentario
+                    generalfeedback:
+                      type: string
+                      description: Comentario general
+    parameters:
+      - in: query
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: ID del examen
+  /insertar-intento-quiz:
+    put:
+      tags:
+        - API
+      summary: Insertar intento de examen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz:
+                  type: string
+                  description: Examen
+                userid:
+                  type: string
+                  description: ID de usuario
+                layout:
+                  type: string
+                  description: Diseño
+                timestart:
+                  type: string
+                  description: Hora de inicio
+                timefinish:
+                  type: string
+                  description: Hora de finalización
+                sumgrades:
+                  type: string
+                  description: Suma de las calificaciones
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+  /obtener-leccion:
+    get:
+      tags:
+        - API
+      summary: Obtener respuestas de la lección
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    pageId:
+                      type: integer
+                      description: ID de la página
+                    prevPageId:
+                      type: integer
+                      description: ID de la página anterior
+                    nextPageId:
+                      type: integer
+                      description: ID de la página siguiente
+                    qType:
+                      type: string
+                      description: Tipo de pregunta
+                    contents:
+                      type: string
+                      description: Contenidos
+                    answerId:
+                      type: integer
+                      description: ID de la respuesta
+                    jumpTo:
+                      type: string
+                      description: Saltar a
+                    score:
+                      type: integer
+                      description: Puntuación
+                    answer:
+                      type: string
+                      description: Respuesta
+                    response:
+                      type: string
+                      description: Respuesta
+    parameters:
+      - in: query
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: ID de la lección
+  /insertar-intento-lesson:
+    put:
+      tags:
+        - API
+      summary: Insertar intento de lección
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lessonId:
+                  type: string
+                  description: ID de la lección
+                pageId:
+                  type: string
+                  description: ID de la página
+                userid:
+                  type: string
+                  description: ID de usuario
+                answerId:
+                  type: string
+                  description: ID de la respuesta
+                correct:
+                  type: string
+                  description: Correcto
+                userAnswer:
+                  type: string
+                  description: Respuesta del usuario
+                timeSeen:
+                  type: string
+                  description: Tiempo visto
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+  /obtener-videos:
+    get:
+      tags:
+        - API
+      summary: Obtener videos
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Nombre del video
+                    externalurl:
+                      type: string
+                      description: URL externa del video
+    parameters:
+      - in: query
+        name: course
+        required: true
+        schema:
+          type: integer
+        description: ID del curso
+  /obtener-cursos:
+    get:
+      tags:
+        - API
+      summary: Obtener cursos
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ID del curso
+                    fullname:
+                      type: string
+                      description: Nombre completo del curso

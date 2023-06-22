@@ -82,7 +82,7 @@ def obtenerForos():
 
 
 @app.route('/obtener-discusiones', methods=['GET'])
-def obtenerDisuciones():
+def obtenerDiscusiones():
     cur = DBManager.get_instance().get_cur()
     cur.execute(
         "SELECT mfd.id, mfd.course , mfd.forum, mfd.name FROM mdl_forum_discussions mfd",
