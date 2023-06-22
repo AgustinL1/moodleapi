@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: MOODLE API
+  version: 1.0.0
+paths:
+  /:
+    get:
+      summary: Obtener la página de inicio
+      responses:
+        "200":
+          description: Página de inicio de la API de Moodle
+          content:
+            text/plain:
+              example: "MOODLE API"
+  /insertar-mensaje:
+    put:
+      summary: Insertar un mensaje en el foro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                discussion:
+                  type: string
+                  description: ID de discusión del foro
+                userId:
+                  type: string
+                  description: ID de usuario
+                msg:
+                  type: string
+                  description: Contenido del mensaje
+                subject:
+                  type: string
+                  description: Asunto del mensaje
+              required:
+                - discussion
+                - userId
+                - msg
+                - subject
+      responses:
+        "200":
+          description: El mensaje se insertó correctamente
+        "400":
+          description: Error al procesar la solicitud
+  /obtener-foros:
+    get:
+      summary: Obtener la lista de foros
+      responses:
+        "200":
+          description: Lista de foros
+          content:
+            application/json:
+              example: |
+                [
+                  {
+                    "id": 1,
+                    "course": "Curso 1",
+                    "name": "Foro 1"
+                  },
+                  {
+                    "id": 2,
+                    "course": "Curso 2",
+                    "name": "Foro 2"
+                  }
+                ]

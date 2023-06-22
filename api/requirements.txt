@@ -1,3 +1,4 @@
 bcrypt
-Flask
 mariadb
+flask
+flask-swagger-ui
