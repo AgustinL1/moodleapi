@@ -91,14 +91,21 @@ paths:
                       type: string
                       description: Nombre de la discusión
     parameters: []
-  /obtener-quizzes:
+  /obtener-quizzes/course={course}:
     get:
       tags:
         - API
-      summary: Obtener quizzes
+      summary: Obtener quizzes por curso
+      parameters:
+        - in: path
+          name: course
+          schema:
+            type: integer
+          required: true
+          description: El identificador del curso del cual se obtendrán los quizzes.
       responses:
         "200":
-          description: OK
+          description: Lista de quizzes obtenidos exitosamente.
           content:
             application/json:
               schema:
@@ -108,31 +115,31 @@ paths:
                   properties:
                     id:
                       type: integer
-                      description: ID del quiz
+                      description: El identificador del quiz.
                     course:
-                      type: string
-                      description: Curso del quiz
+                      type: integer
+                      description: El identificador del curso al que pertenece el quiz.
                     name:
                       type: string
-                      description: Nombre del quiz
+                      description: El nombre del quiz.
                     intro:
                       type: string
-                      description: Introducción del quiz
-    parameters:
-      - in: query
-        name: course
-        required: true
-        schema:
-          type: string
-        description: Curso asociado al quiz
-  /obtener-mensajes-discusion:
+                      description: La introducción del quiz.
+  /obtener-mensajes-discusion/{discussion}:
     get:
       tags:
         - API
-      summary: Obtener mensajes de discusión
+      summary: Obtener mensajes de una discusión en el foro
+      parameters:
+        - in: path
+          name: discussion
+          schema:
+            type: string
+          required: true
+          description: El identificador de la discusión de la cual se obtendrán los mensajes.
       responses:
         "200":
-          description: OK
+          description: Lista de mensajes obtenidos exitosamente.
           content:
             application/json:
               schema:
@@ -142,41 +149,41 @@ paths:
                   properties:
                     id:
                       type: integer
-                      description: ID del mensaje
+                      description: El identificador del mensaje.
                     discussion:
-                      type: integer
-                      description: ID de la discusión asociada al mensaje
+                      type: string
+                      description: El identificador de la discusión a la cual pertenece el mensaje.
                     parent:
                       type: integer
-                      description: ID del mensaje padre
+                      description: El identificador del mensaje padre (si existe).
                     userId:
                       type: integer
-                      description: ID del usuario que envió el mensaje
+                      description: El identificador del usuario que creó el mensaje.
                     created:
                       type: string
                       format: date-time
-                      description: Fecha y hora de creación del mensaje
+                      description: La fecha y hora de creación del mensaje.
                     subject:
                       type: string
-                      description: Asunto del mensaje
+                      description: El asunto del mensaje.
                     message:
                       type: string
-                      description: Contenido del mensaje
-    parameters:
-      - in: query
-        name: discussion
-        required: true
-        schema:
-          type: integer
-        description: ID de la discusión de la cual obtener los mensajes
-  /obtener-datos-foro:
+                      description: El contenido del mensaje.
+  /obtener-datos-foro/name={name}:
     get:
       tags:
         - API
-      summary: Obtener datos del foro
+      summary: Obtener datos de un foro por nombre
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: El nombre del foro del cual se obtendrán los datos.
       responses:
         "200":
-          description: OK
+          description: Datos del foro obtenidos exitosamente.
           content:
             application/json:
               schema:
@@ -186,21 +193,13 @@ paths:
                   properties:
                     id:
                       type: integer
-                      description: ID del foro
+                      description: El identificador del foro.
                     course:
-                      type: string
-                      description: Curso del foro
+                      type: integer
+                      description: El identificador del curso al que pertenece el foro.
                     intro:
                       type: string
-                      description: Introducción del foro
-    parameters:
-      - in: query
-        name: name
-        required: true
-        schema:
-          type: string
-        description: Nombre del foro
-
+                      description: La introducción del foro.
   /user-login:
     put:
       tags:
@@ -246,15 +245,21 @@ paths:
                       description: Correo electrónico del usuario
         "400":
           description: Bad Request
-
-  /obtener-nombre-discusion:
+  /obtener-nombre-discusion/id={id}:
     get:
       tags:
         - API
-      summary: Obtener nombre de la discusión
+      summary: Obtener nombre de una discusión por ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: El identificador de la discusión de la cual se desea obtener el nombre.
       responses:
         "200":
-          description: OK
+          description: Nombre de la discusión obtenido exitosamente.
           content:
             application/json:
               schema:
@@ -264,23 +269,22 @@ paths:
                   properties:
                     name:
                       type: string
-                      description: Nombre de la discusión
-    parameters:
-      - in: query
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: ID de la discusión
-
-  /obtener-participantes-curso:
+                      description: El nombre de la discusión.
+  /obtener-participantes-curso/id={courseId}:
     get:
       tags:
         - API
-      summary: Obtener participantes del curso
+      summary: Obtener participantes de un curso por ID
+      parameters:
+        - in: path
+          name: courseId
+          schema:
+            type: integer
+          required: true
+          description: El identificador del curso del cual se desea obtener los participantes.
       responses:
         "200":
-          description: OK
+          description: Lista de participantes obtenida exitosamente.
           content:
             application/json:
               schema:
@@ -290,22 +294,22 @@ paths:
                   properties:
                     userId:
                       type: integer
-                      description: ID del participante
-    parameters:
-      - in: query
-        name: courseId
-        required: true
-        schema:
-          type: integer
-        description: ID del curso
-  /obtener-preguntas-examen:
+                      description: El identificador del participante.
+  /obtener-preguntas-examen/id={id}:
     get:
       tags:
         - API
-      summary: Obtener preguntas del examen
+      summary: Obtener preguntas de un examen por ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: El identificador del examen del cual se desean obtener las preguntas.
       responses:
         "200":
-          description: OK
+          description: Lista de preguntas del examen obtenida exitosamente.
           content:
             application/json:
               schema:
@@ -315,71 +319,64 @@ paths:
                   properties:
                     id:
                       type: integer
-                      description: ID de la pregunta
+                      description: El identificador del examen.
                     course:
-                      type: string
-                      description: Curso de la pregunta
+                      type: integer
+                      description: El identificador del curso al que pertenece el examen.
                     name:
                       type: string
-                      description: Nombre del examen
+                      description: El nombre del examen.
                     timelimit:
                       type: string
-                      description: Límite de tiempo del examen
+                      description: El límite de tiempo del examen.
                     intro:
                       type: string
-                      description: Introducción del examen
+                      description: La introducción del examen.
                     sumgrades:
                       type: number
-                      description: Suma de las calificaciones
+                      description: La suma de las calificaciones del examen.
                     grade:
                       type: number
-                      description: Calificación
+                      description: La calificación del examen.
                     quizid:
-                      type: string
-                      description: ID del examen
+                      type: integer
+                      description: El identificador del cuestionario.
                     questionid:
-                      type: string
-                      description: ID de la pregunta
+                      type: integer
+                      description: El identificador de la pregunta.
                     question_name:
                       type: string
-                      description: Nombre de la pregunta
+                      description: El nombre de la pregunta.
                     question_text:
                       type: string
-                      description: Texto de la pregunta
+                      description: El texto de la pregunta.
                     defaultmark:
                       type: number
-                      description: Marca predeterminada
+                      description: La calificación predeterminada de la pregunta.
                     question_answer_id:
-                      type: string
-                      description: ID de la respuesta de la pregunta
+                      type: integer
+                      description: El identificador de la respuesta de la pregunta.
                     question_answer:
                       type: string
-                      description: Respuesta de la pregunta
+                      description: La respuesta de la pregunta.
                     fraction:
                       type: number
-                      description: Fracción
+                      description: La fracción de la calificación de la pregunta.
                     fullName:
                       type: string
-                      description: Nombre completo del curso
+                      description: El nombre completo del curso.
                     shortName:
                       type: string
-                      description: Nombre corto del curso
+                      description: El nombre corto del curso.
                     summary:
                       type: string
-                      description: Resumen del curso
+                      description: El resumen del curso.
                     feedback:
                       type: string
-                      description: Comentario
+                      description: El comentario sobre la respuesta del usuario.
                     generalfeedback:
                       type: string
-                      description: Comentario general
-    parameters:
-      - in: query
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: ID del examen
+                      description: El comentario general sobre la pregunta.
   /insertar-intento-quiz:
     put:
       tags:
@@ -415,58 +412,6 @@ paths:
           description: OK
         "400":
           description: Bad Request
-  /obtener-leccion:
-    get:
-      tags:
-        - API
-      summary: Obtener respuestas de la lección
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    pageId:
-                      type: integer
-                      description: ID de la página
-                    prevPageId:
-                      type: integer
-                      description: ID de la página anterior
-                    nextPageId:
-                      type: integer
-                      description: ID de la página siguiente
-                    qType:
-                      type: string
-                      description: Tipo de pregunta
-                    contents:
-                      type: string
-                      description: Contenidos
-                    answerId:
-                      type: integer
-                      description: ID de la respuesta
-                    jumpTo:
-                      type: string
-                      description: Saltar a
-                    score:
-                      type: integer
-                      description: Puntuación
-                    answer:
-                      type: string
-                      description: Respuesta
-                    response:
-                      type: string
-                      description: Respuesta
-    parameters:
-      - in: query
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: ID de la lección
   /insertar-intento-lesson:
     put:
       tags:
@@ -505,14 +450,73 @@ paths:
           description: OK
         "400":
           description: Bad Request
-  /obtener-videos:
+  /obtener-leccion/id={id}:
     get:
       tags:
         - API
-      summary: Obtener videos
+      summary: Obtener respuestas de una lección por ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: El identificador de la lección de la cual se desean obtener las respuestas.
       responses:
         "200":
-          description: OK
+          description: Lista de respuestas de la lección obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    pageId:
+                      type: integer
+                      description: El identificador de la página de la lección.
+                    prevPageId:
+                      type: integer
+                      description: El identificador de la página anterior.
+                    nextPageId:
+                      type: integer
+                      description: El identificador de la página siguiente.
+                    qType:
+                      type: string
+                      description: El tipo de pregunta.
+                    contents:
+                      type: string
+                      description: El contenido de la página.
+                    answerId:
+                      type: integer
+                      description: El identificador de la respuesta.
+                    jumpTo:
+                      type: string
+                      description: La página a la que se debe saltar.
+                    score:
+                      type: integer
+                      description: La puntuación de la respuesta.
+                    answer:
+                      type: string
+                      description: La respuesta.
+                    response:
+                      type: string
+                      description: La respuesta del usuario.
+  /obtener-videos/course={course}:
+    get:
+      tags:
+        - API
+      summary: Obtener videos de un curso por ID
+      parameters:
+        - in: path
+          name: course
+          schema:
+            type: integer
+          required: true
+          description: El identificador del curso del cual se desean obtener los videos.
+      responses:
+        "200":
+          description: Lista de videos del curso obtenida exitosamente.
           content:
             application/json:
               schema:
@@ -522,25 +526,25 @@ paths:
                   properties:
                     name:
                       type: string
-                      description: Nombre del video
+                      description: El nombre del video.
                     externalurl:
                       type: string
-                      description: URL externa del video
-    parameters:
-      - in: query
-        name: course
-        required: true
-        schema:
-          type: integer
-        description: ID del curso
-  /obtener-cursos:
+                      description: La URL externa del video.
+  /obtener-pdf/course={course}:
     get:
       tags:
         - API
-      summary: Obtener cursos
+      summary: Obtener PDFs de un curso por ID
+      parameters:
+        - in: path
+          name: course
+          schema:
+            type: integer
+          required: true
+          description: El identificador del curso del cual se desean obtener los PDFs.
       responses:
         "200":
-          description: OK
+          description: Lista de PDFs del curso obtenida exitosamente.
           content:
             application/json:
               schema:
@@ -548,9 +552,9 @@ paths:
                 items:
                   type: object
                   properties:
-                    id:
-                      type: integer
-                      description: ID del curso
-                    fullname:
+                    name:
                       type: string
-                      description: Nombre completo del curso
+                      description: El nombre del PDF.
+                    externalurl:
+                      type: string
+                      description: La URL externa del PDF.

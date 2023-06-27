@@ -49,18 +49,7 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     restart: always
-
-  watchtower:
-    image: containrrr/watchtower
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --label-enable --label-interval 15
 
   lt-moodle:
     image: efrecon/localtunnel

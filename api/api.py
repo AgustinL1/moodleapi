@@ -8,7 +8,7 @@ import os
 
 app = Flask(__name__)
 
-SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
+SWAGGER_URL = '/docs'  # URL for exposing Swagger UI (without trailing '/')
 # Our API url (can of course be a local resource)
 API_URL = '/static/swagger.yaml'
 
@@ -40,8 +40,6 @@ def index():
 
 @app.route('/insertar-mensaje', methods=['PUT'])
 def insertar():
-    print("hola")
-    print(request)
     try:
         discussion = request.json.get("discussion")
         userId = request.json.get("userId")
@@ -97,12 +95,8 @@ def obtenerDiscusiones():
     return json.dumps(res)
 
 
-@app.route('/obtener-quizzes', methods=['GET'])
-def obtenerQuizzes():
-    try:
-        course = request.json.get("course")
-    except:
-        return "", 400
+@app.route('/obtener-quizzes/course=<int:course>', methods=['GET'])
+def obtenerQuizzes(course):
     cur = DBManager.get_instance().get_cur()
     cur.execute(
         "SELECT mdq.id, mdq.course, mdq.name, mdq.intro \
@@ -118,14 +112,8 @@ def obtenerQuizzes():
     return json.dumps(res)
 
 
-@app.route('/obtener-mensajes-discusion', methods=['GET'])
-def obtenerMensajesForos():
-    print(request.json)
-    try:
-        discussion = request.json.get("discussion")
-    except:
-        return "", 400
-
+@app.route('/obtener-mensajes-discusion/<discussion>', methods=['GET'])
+def obtenerMensajesForos(discussion):
     cur = DBManager.get_instance().get_cur()
     cur.execute(
         "SELECT mfp.id, mfp.discussion, mfp.parent, mfp.userid, mfp.created, mfp.subject, mfp.message FROM mdl_forum_posts mfp WHERE mfp.discussion=?",
@@ -141,14 +129,8 @@ def obtenerMensajesForos():
     return json.dumps(res)
 
 
-@app.route('/obtener-datos-foro', methods=['GET'])
-def obtenerDatosForo():
-
-    try:
-        name = request.json.get("name")
-    except:
-        return "", 400
-
+@app.route('/obtener-datos-foro/name=<name>', methods=['GET'])
+def obtenerDatosForo(name):
     cur = DBManager.get_instance().get_cur()
     cur.execute(
         "SELECT mf.id, mf.course, mf.intro FROM mdl_forum mf WHERE  mf.name=?",
@@ -190,14 +172,8 @@ def userLogin():
         return json.dumps([])
 
 
-@app.route('/obtener-nombre-discusion', methods=['GET'])
-def obtenerNombreDiscusion():
-
-    try:
-        id = request.json.get("id")
-    except:
-        return "", 400
-
+@app.route('/obtener-nombre-discusion/id=<int:id>', methods=['GET'])
+def obtenerNombreDiscusion(id):
     cur = DBManager.get_instance().get_cur()
     cur.execute(
         "SELECT mfd.name FROM mdl_forum_discussions mfd WHERE mfd.id=?",
@@ -212,14 +188,8 @@ def obtenerNombreDiscusion():
     return json.dumps(res)
 
 
-@app.route('/obtener-participantes-curso', methods=['GET'])
-def obtenerParticipantesCurso():
-
-    try:
-        courseId = request.json.get("courseId")
-    except:
-        return "", 400
-
+@app.route('/obtener-participantes-curso/id=<int:courseId>', methods=['GET'])
+def obtenerParticipantesCurso(courseId):
     cur = DBManager.get_instance().get_cur()
     cur.execute(
         "SELECT ue.userid FROM mdl_course AS c JOIN mdl_enrol AS en ON en.courseid = c.id JOIN mdl_user_enrolments AS ue ON ue.enrolid = en.id WHERE c.id=?",
@@ -234,14 +204,8 @@ def obtenerParticipantesCurso():
     return json.dumps(res)
 
 
-@app.route('/obtener-preguntas-examen', methods=['GET'])
-def obtenerPreguntasExamen():
-
-    try:
-        id = request.json.get("id")
-    except:
-        return "", 400
-
+@app.route('/obtener-preguntas-examen/id=<int:id>', methods=['GET'])
+def obtenerPreguntasExamen(id):
     cur = DBManager.get_instance().get_cur()
     cur.execute(
         """
@@ -298,14 +262,8 @@ def insertarIntentoQuiz():
     return "", 200
 
 
-@app.route('/obtener-leccion', methods=['GET'])
-def obtenerRespuestasLesson():
-
-    try:
-        id = request.json.get("id")
-    except:
-        return "", 400
-
+@app.route('/obtener-leccion/id=<int:id>', methods=['GET'])
+def obtenerRespuestasLesson(id):
     cur = DBManager.get_instance().get_cur()
     cur.execute(
         "SELECT lp.id, lp.prevpageid, lp.nextpageid, lp.qtype, lp.contents, la.id, la.jumpto, la.score, la.answer, la.response FROM mdl_lesson_pages lp JOIN mdl_lesson_answers la ON lp.lessonid = la.lessonid AND lp.id = la.pageid WHERE la.lessonid = ?;",
@@ -345,29 +303,6 @@ def insertarIntentoLesson():
     return "", 200
 
 
-@app.route('/obtener-videos', methods=['GET'])
-def obtenerVideo():
-    print(request.json)
-    try:
-        course = request.json.get("course")
-    except:
-        return "", 400
-
-    cur = DBManager.get_instance().get_cur()
-    cur.execute("select distinct u.name, u.externalurl \
-               from mdl_url u \
-               join mdl_course_modules cm on u.id=cm.instance \
-               join mdl_course_sections cs on cm.section=cs.id \
-               where(u.course=?)",
-                (course,))
-    res = []
-    for i in cur:
-        res.append({"name": i[0], "externalurl": i[1]})
-
-    # Convertir el objeto JSON en una cadena
-    return json.dumps(res)
-
-
 @app.route('/obtener-cursos', methods=['GET'])
 def obtenerCursos():
 
@@ -382,6 +317,40 @@ def obtenerCursos():
             "fullname": i[1]
         })
 
+    return json.dumps(res)
+
+
+@app.route('/obtener-videos/course=<int:course>', methods=['GET'])
+def obtenerVideo(course):
+    cur = DBManager.get_instance().get_cur()
+    cur.execute("select distinct u.name, u.externalurl \
+               from mdl_url u \
+               join mdl_course_modules cm on u.id=cm.instance \
+               join mdl_course_sections cs on cm.section=cs.id \
+               where(u.course=? AND u.externalurl like '%youtube%')",
+                (course,))
+    res = []
+    for i in cur:
+        res.append({"name": i[0], "externalurl": i[1]})
+
+    # Convertir el objeto JSON en una cadena
+    return json.dumps(res)
+
+
+@app.route('/obtener-pdf/course=<int:course>', methods=['GET'])
+def obtenerPdfs(course):
+    cur = DBManager.get_instance().get_cur()
+    cur.execute("select distinct u.name, u.externalurl \
+               from mdl_url u \
+               join mdl_course_modules cm on u.id=cm.instance \
+               join mdl_course_sections cs on cm.section=cs.id \
+               where(u.course=? AND u.externalurl like '%drive%')",
+                (course,))
+    res = []
+    for i in cur:
+        res.append({"name": i[0], "externalurl": i[1]})
+
+    # Convertir el objeto JSON en una cadena
     return json.dumps(res)
 
 
